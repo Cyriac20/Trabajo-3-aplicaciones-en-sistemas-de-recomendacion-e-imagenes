@@ -1,0 +1,23 @@
+# Datos
+data/
+*.csv
+*.zip
+
+# Modelos
+*.pth
+*.pt
+*.pkl
+*.h5
+*.onnx
+
+# Entornos y caché
+__pycache__/
+*.pyc
+.env
+venv/
+env/
+.ipynb_checkpoints/
+
+# SO
+.DS_Store
+Thumbs.db
