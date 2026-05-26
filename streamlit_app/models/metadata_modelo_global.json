@@ -1,0 +1,57 @@
+{
+  "parametros_norm": {
+    "Medellin-Bogota": [
+      122.0,
+      536.0
+    ],
+    "Medellin-Cartagena": [
+      65.0,
+      281.0
+    ],
+    "Medellin-Guatape": [
+      51.0,
+      249.0
+    ],
+    "Medellin-Manizales": [
+      86.0,
+      312.0
+    ],
+    "Medellin-Pereira": [
+      89.0,
+      351.0
+    ],
+    "Medellin-SantaFeAntioquia": [
+      39.0,
+      202.0
+    ]
+  },
+  "ruta_a_id": {
+    "Medellin-Bogota": 0,
+    "Medellin-Cartagena": 1,
+    "Medellin-Guatape": 2,
+    "Medellin-Manizales": 3,
+    "Medellin-Pereira": 4,
+    "Medellin-SantaFeAntioquia": 5
+  },
+  "rutas": [
+    "Medellin-Bogota",
+    "Medellin-Cartagena",
+    "Medellin-Guatape",
+    "Medellin-Manizales",
+    "Medellin-Pereira",
+    "Medellin-SantaFeAntioquia"
+  ],
+  "ventana_entrada": 60,
+  "horizonte_salida": 30,
+  "features_temporales": [
+    "dow_sin",
+    "dow_cos",
+    "mes_sin",
+    "mes_cos",
+    "es_festivo"
+  ],
+  "embedding_dim": 4,
+  "hidden_size": 64,
+  "num_rutas": 6,
+  "fecha_corte": "2024-11-01"
+}

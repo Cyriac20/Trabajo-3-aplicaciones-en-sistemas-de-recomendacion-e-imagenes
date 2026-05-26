@@ -1,0 +1,24 @@
+# Tema visual de RutaViva — colorido y festivo
+# Inspirado en los colores del Caribe colombiano y del Eje Cafetero
+
+[theme]
+# Color primario : fuchsia/coral del atardecer caribeño
+primaryColor = "#E63946"
+
+# Fondo principal : crema cálido (no blanco puro)
+backgroundColor = "#FFF8F0"
+
+# Fondo secundario : crema más oscuro para sidebar y cards
+secondaryBackgroundColor = "#FFE8D6"
+
+# Texto : negro suave (no #000)
+textColor = "#1D1D1F"
+
+# Fuente : sans-serif moderno
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
