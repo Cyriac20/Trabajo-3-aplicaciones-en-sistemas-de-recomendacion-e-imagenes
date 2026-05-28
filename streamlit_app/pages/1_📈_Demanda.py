@@ -149,8 +149,9 @@ if modo == "evaluacion" and resultado["valores_reales"] is not None:
 
 # Línea vertical separando historial y predicción
 fecha_separacion = resultado["fechas_prediccion"][0]
+fecha_ms = fecha_separacion.timestamp() * 1000
 fig.add_vline(
-    x=str(fecha_separacion),
+    x=fecha_ms,
     line=dict(color=COLORS["texto_soft"], width=1, dash="dash"),
     annotation_text="Inicio predicción",
     annotation_position="top",
