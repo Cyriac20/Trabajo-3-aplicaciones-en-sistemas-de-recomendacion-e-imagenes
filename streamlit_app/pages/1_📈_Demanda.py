@@ -147,15 +147,26 @@ if modo == "evaluacion" and resultado["valores_reales"] is not None:
         )
     )
 
-# Línea vertical separando historial y predicción
+# Línea vertical separando historial y predicción.
+# Usamos add_shape en vez de add_vline para evitar un bug conocido de Plotly
+# con pandas reciente: add_vline intenta hacer la media de pd.Timestamp,
+# operación que ya no se soporta.
 fecha_separacion = resultado["fechas_prediccion"][0]
-fecha_ms = fecha_separacion.timestamp() * 1000
-fig.add_vline(
-    x=fecha_ms,
+fig.add_shape(
+    type="line",
+    x0=fecha_separacion, x1=fecha_separacion,
+    y0=0, y1=1,
+    yref="paper",
     line=dict(color=COLORS["texto_soft"], width=1, dash="dash"),
-    annotation_text="Inicio predicción",
-    annotation_position="top",
-    annotation_font=dict(size=11, color=COLORS["texto_soft"]),
+)
+fig.add_annotation(
+    x=fecha_separacion,
+    y=1.02,
+    yref="paper",
+    text="Inicio predicción",
+    showarrow=False,
+    font=dict(size=11, color=COLORS["texto_soft"]),
+    xanchor="left",
 )
 
 fig.update_layout(
@@ -190,11 +201,18 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Métricas resumen (solo en modo evaluación, calculadas en directo)
 if modo == "evaluacion" and resultado["valores_reales"] is not None:
-    reales = resultado["valores_reales"]
-    pred = resultado["valores_prediccion"][: len(reales)]
-    rmse = float(np.sqrt(np.mean((pred - reales) ** 2)))
-    mae = float(np.mean(np.abs(pred - reales)))
-    error_relativo = float(mae / np.mean(reales) * 100)
+    reales = np.asarray(resultado["valores_reales"], dtype=float)
+    pred = np.asarray(resultado["valores_prediccion"][: len(reales)], dtype=float)
+
+    # Mascara: solo comparamos en las fechas donde el real existe (sin NaN).
+    # Esto garantiza que predicción y real estén alineados sobre las mismas fechas.
+    mask = ~np.isnan(reales)
+    reales_v = reales[mask]
+    pred_v = pred[mask]
+
+    rmse = float(np.sqrt(np.mean((pred_v - reales_v) ** 2)))
+    mae = float(np.mean(np.abs(pred_v - reales_v)))
+    error_relativo = float(mae / np.mean(reales_v) * 100)
 
     col_met = st.columns(3)
     col_met[0].metric("RMSE", f"{rmse:.1f}", help="Raíz del error cuadrático medio")

@@ -231,7 +231,10 @@ def preparar_secuencia_entrada(df_ruta: pd.DataFrame, ruta: str,
     features_temp = construir_features_temporales(fechas)         # (ventana, 5)
     pasajeros_norm = normalizar(df_ventana["pasajeros"].values, ruta)  # (ventana,)
 
-    x_seq = np.column_stack([features_temp, pasajeros_norm])       # (ventana, 6)
+    # IMPORTANTE: el orden de las features debe ser idéntico al del entrenamiento.
+    # En el notebook: valores_entrada = df[[objetivo] + features]
+    # → el pasajero normalizado va PRIMERO, luego las 5 features temporales.
+    x_seq = np.column_stack([pasajeros_norm, features_temp])       # (ventana, 6)
     return x_seq, fechas
 
 
@@ -269,19 +272,27 @@ def predecir(ruta: str, modo: str = "evaluacion") -> dict:
     df_ruta = df[df["ruta"] == ruta].sort_values("fecha").reset_index(drop=True)
 
     if modo == "evaluacion":
-        # Predecir el primer mes después de fecha_corte
-        # Entrada = los 60 días antes de fecha_corte
+        # Entrada = los `ventana` días antes de fecha_corte.
+        # Según la convención del entrenamiento, la salida empieza el día
+        # SIGUIENTE al último día de entrada. Derivamos las fechas de
+        # predicción a partir de ese último día (NO de fecha_corte) para
+        # garantizar el alineamiento exacto entre predicción y valores reales.
         df_train = df_ruta[df_ruta["fecha"] < fecha_corte]
         df_input = df_train.tail(ventana)
 
-        # Las fechas a predecir = los `horizonte` días después de fecha_corte
+        fecha_ultima_input = pd.to_datetime(df_input["fecha"].iloc[-1])
         fechas_pred = pd.date_range(
-            start=fecha_corte, periods=horizonte, freq="D"
+            start=fecha_ultima_input + pd.Timedelta(days=1),
+            periods=horizonte,
+            freq="D",
         )
 
-        # Valores reales (si disponibles en el dataset)
-        df_real = df_ruta[df_ruta["fecha"].isin(fechas_pred)]
-        valores_reales = df_real["pasajeros"].values if len(df_real) > 0 else None
+        # Valores reales: recuperados sobre EXACTAMENTE las mismas fechas,
+        # en el mismo orden, para evitar cualquier desfase.
+        df_real = df_ruta.set_index("fecha").reindex(fechas_pred)
+        valores_reales = (
+            df_real["pasajeros"].values if df_real["pasajeros"].notna().any() else None
+        )
 
     elif modo == "prediccion":
         # Predecir los 30 días que siguen al último día del dataset
@@ -301,7 +312,8 @@ def predecir(ruta: str, modo: str = "evaluacion") -> dict:
     fechas_input = pd.DatetimeIndex(df_input["fecha"].values)
     features_temp = construir_features_temporales(fechas_input)
     pasajeros_norm = normalizar(df_input["pasajeros"].values, ruta)
-    x_seq = np.column_stack([features_temp, pasajeros_norm]).astype(np.float32)
+    # IMPORTANTE: orden idéntico al entrenamiento — pasajero PRIMERO, luego temporales.
+    x_seq = np.column_stack([pasajeros_norm, features_temp]).astype(np.float32)
 
     # Inferencia
     x_seq_t = torch.tensor(x_seq).unsqueeze(0)                 # (1, ventana, 6)
