@@ -1,5 +1,5 @@
 streamlit==1.39.0
-torch==2.4.1
+torch
 torchvision==0.19.1
 numpy==1.26.4
 pandas==2.2.3
