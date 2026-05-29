@@ -54,11 +54,11 @@ CLASES = [
 ]
 
 CLASES_DISPLAY = {
-    "safe_driving":     ("Conducción segura",   "✅"),
-    "texting_phone":    ("Escribiendo SMS",     "📱"),
-    "talking_phone":    ("Hablando por teléfono", "📞"),
-    "turning":          ("Girándose",           "↩️"),
-    "other_activities": ("Otras actividades",   "❓"),
+    "safe_driving":     ("Conducción segura", ""),
+    "texting_phone":    ("Escribiendo SMS", ""),
+    "talking_phone":    ("Hablando por teléfono", ""),
+    "turning":          ("Girándose", ""),
+    "other_activities": ("Otras actividades", ""),
 }
 
 

@@ -147,7 +147,7 @@ def train_model(data_dir, num_epochs=10, batch_size=32, learning_rate=0.001):
         if val_acc > best_acc:
             best_acc = val_acc
             torch.save(model.state_dict(), 'modelo_cnn.pth')
-            print(f"⭐ ¡Nuevo mejor modelo guardado con precisión de {best_acc:.4f}!")
+            print(f"Nuevo mejor modelo guardado con precisión de {best_acc:.4f}.")
             
     # 5. Evaluación Final y Métricas
     print("\\n--- Evaluación Final del Mejor Modelo ---")

@@ -45,7 +45,7 @@ PATH_GROUND_TRUTH = DATA_DIR / "ground_truth_arquetipos.csv"
 # =============================================================================
 # DEFINICIÓN DEL MODELO
 # =============================================================================
-# CRÍTICO: esta clase debe ser IDÉNTICA a la del notebook de entrenamiento,
+# La estructura debe coincidir con la usada durante el entrenamiento,
 # de lo contrario load_state_dict() fallará o producirá pesos incorrectos.
 
 class MatrixFactorization(nn.Module):

@@ -18,7 +18,6 @@ from utils.style import aplicar_estilo, COLORS
 
 st.set_page_config(
     page_title="RutaViva · Sistema Inteligente",
-    page_icon="🚌",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -31,7 +30,7 @@ aplicar_estilo()
 # =============================================================================
 
 with st.sidebar:
-    st.markdown("### 🚌 RutaViva")
+    st.markdown("### RutaViva")
     st.markdown(
         "**Sistema Inteligente Integrado**  \n"
         "para una PME de transporte intermunicipal colombiana."
@@ -70,7 +69,7 @@ st.markdown(
 # CONTEXTO DE LA EMPRESA
 # =============================================================================
 
-st.markdown("### 📍 El contexto")
+st.markdown("### Contexto")
 
 col_ctx_1, col_ctx_2 = st.columns([2, 1])
 
@@ -81,8 +80,9 @@ with col_ctx_1:
         que opera con una flota mixta de buses, minibuses y vans entre Medellín,
         el Eje Cafetero, Bogotá, Cartagena y destinos turísticos antioqueños.
 
-        Como toda PME del sector, RutaViva enfrenta tres desafíos críticos que
-        este sistema busca resolver mediante deep learning :
+        Como muchas empresas del sector, RutaViva enfrenta tres desafíos
+        operativos que este sistema aborda mediante modelos de aprendizaje
+        profundo:
         """
     )
 
@@ -110,10 +110,10 @@ st.markdown("&nbsp;")
 # LAS 3 PERSONAS (DESIGN THINKING)
 # =============================================================================
 
-st.markdown("### 👥 Tres personas, tres necesidades")
+st.markdown("### Personas y necesidades")
 st.markdown(
-    "Identificadas durante la fase **Empathize** del Design Thinking, "
-    "estas tres personas guían cada decisión técnica del proyecto."
+    "Las personas definidas en la etapa de análisis ayudan a conectar cada "
+    "módulo con una necesidad concreta del negocio."
 )
 
 st.markdown("&nbsp;")
@@ -124,7 +124,6 @@ with col_p1:
     st.markdown(
         f"""
         <div class="persona-card" style="--accent: {COLORS['verde']};">
-            <div style="font-size: 2.5rem;">👨‍💼</div>
             <h3>Carlos</h3>
             <div class="role">Gerente de Operaciones · 45 años</div>
             <div class="quote">
@@ -135,7 +134,7 @@ with col_p1:
             <div style="margin-top: 1rem; padding-top: 1rem;
                         border-top: 1px solid #eee; font-size: 0.85rem;
                         color: {COLORS['texto_soft']};">
-                → Módulo 1 : Predicción de demanda
+                Módulo 1: predicción de demanda
             </div>
         </div>
         """,
@@ -146,7 +145,6 @@ with col_p2:
     st.markdown(
         f"""
         <div class="persona-card" style="--accent: {COLORS['turquesa']};">
-            <div style="font-size: 2.5rem;">👩‍💼</div>
             <h3>Diana</h3>
             <div class="role">Jefa de Seguridad Vial · 38 años</div>
             <div class="quote">
@@ -157,7 +155,7 @@ with col_p2:
             <div style="margin-top: 1rem; padding-top: 1rem;
                         border-top: 1px solid #eee; font-size: 0.85rem;
                         color: {COLORS['texto_soft']};">
-                → Módulo 2 : Detección de distracción
+                Módulo 2: detección de distracción
             </div>
         </div>
         """,
@@ -168,7 +166,6 @@ with col_p3:
     st.markdown(
         f"""
         <div class="persona-card" style="--accent: {COLORS['coral']};">
-            <div style="font-size: 2.5rem;">🧳</div>
             <h3>Andrés</h3>
             <div class="role">Cliente frecuente · 28 años</div>
             <div class="quote">
@@ -179,7 +176,7 @@ with col_p3:
             <div style="margin-top: 1rem; padding-top: 1rem;
                         border-top: 1px solid #eee; font-size: 0.85rem;
                         color: {COLORS['texto_soft']};">
-                → Módulo 3 : Recomendaciones personalizadas
+                Módulo 3: recomendaciones personalizadas
             </div>
         </div>
         """,
@@ -194,15 +191,15 @@ st.markdown("&nbsp;")
 # LOS 3 MÓDULOS
 # =============================================================================
 
-st.markdown("### 🧠 Los tres módulos de deep learning")
+st.markdown("### Módulos del sistema")
 
 col_m1, col_m2, col_m3 = st.columns(3)
 
 with col_m1:
     st.markdown(
         f"""
+        <a href="/Demanda" target="_self" style="text-decoration: none; color: inherit;">
         <div class="modulo-card">
-            <div class="icono">📈</div>
             <h3>Módulo 1</h3>
             <div style="font-weight: 600; color: {COLORS['coral']};
                         margin-bottom: 0.5rem;">Predicción de demanda</div>
@@ -212,17 +209,20 @@ with col_m1:
             </div>
             <div style="margin-top: 1rem;">
                 <span class="badge badge-ok">Operacional</span>
+                <span style="float:right; color: {COLORS['turquesa']}; font-weight: 600;">Abrir →</span>
             </div>
         </div>
+        </a>
         """,
         unsafe_allow_html=True,
     )
+    st.page_link("pages/1_Demanda.py", label="Ir al Módulo 1", icon="📈")
 
 with col_m2:
     st.markdown(
         f"""
+        <a href="/Conduccion" target="_self" style="text-decoration: none; color: inherit;">
         <div class="modulo-card">
-            <div class="icono">🛣️</div>
             <h3>Módulo 2</h3>
             <div style="font-weight: 600; color: {COLORS['coral']};
                         margin-bottom: 0.5rem;">Conducción distraída</div>
@@ -231,18 +231,21 @@ with col_m2:
                 imágenes de conductores en categorías de comportamiento.
             </div>
             <div style="margin-top: 1rem;">
-                <span class="badge badge-pending">En preparación</span>
+                <span class="badge badge-ok">Operacional</span>
+                <span style="float:right; color: {COLORS['turquesa']}; font-weight: 600;">Abrir →</span>
             </div>
         </div>
+        </a>
         """,
         unsafe_allow_html=True,
     )
+    st.page_link("pages/2_Conduccion.py", label="Ir al Módulo 2", icon="🛣️")
 
 with col_m3:
     st.markdown(
         f"""
+        <a href="/Recomendaciones" target="_self" style="text-decoration: none; color: inherit;">
         <div class="modulo-card">
-            <div class="icono">🧭</div>
             <h3>Módulo 3</h3>
             <div style="font-weight: 600; color: {COLORS['coral']};
                         margin-bottom: 0.5rem;">Recomendaciones</div>
@@ -252,15 +255,18 @@ with col_m3:
             </div>
             <div style="margin-top: 1rem;">
                 <span class="badge badge-ok">Operacional</span>
+                <span style="float:right; color: {COLORS['turquesa']}; font-weight: 600;">Abrir →</span>
             </div>
         </div>
+        </a>
         """,
         unsafe_allow_html=True,
     )
+    st.page_link("pages/3_Recomendaciones.py", label="Ir al Módulo 3", icon="🧭")
 
 st.markdown("&nbsp;")
 st.info(
-    "👈 **Usa el menú lateral** para navegar entre los módulos y explorar "
+    "**Usa el menú lateral** para navegar entre los módulos y explorar "
     "las predicciones, clasificaciones y recomendaciones generadas por los modelos."
 )
 

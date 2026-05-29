@@ -9,7 +9,7 @@ Centraliza:
   - La inferencia en dos modos:
       * Modo evaluación: predice nov 2024 (datos reales disponibles → comparación)
       * Modo predicción: predice el futuro a partir del último día del dataset
-  - El cálculo PCA de los embeddings de ruta (análisis creativo)
+  - El cálculo PCA de los embeddings de ruta
 """
 
 from pathlib import Path
@@ -65,7 +65,7 @@ FESTIVOS_SET = set(pd.to_datetime(FESTIVOS_RAW).date)
 # =============================================================================
 # DEFINICIÓN DEL MODELO
 # =============================================================================
-# CRÍTICO: idéntica al notebook. Cualquier diferencia rompe load_state_dict().
+# La estructura debe coincidir con la usada al entrenar el modelo.
 
 class LSTMConEmbedding(nn.Module):
     """LSTM global con embedding de ruta para predicción multi-step directa.
@@ -231,9 +231,9 @@ def preparar_secuencia_entrada(df_ruta: pd.DataFrame, ruta: str,
     features_temp = construir_features_temporales(fechas)         # (ventana, 5)
     pasajeros_norm = normalizar(df_ventana["pasajeros"].values, ruta)  # (ventana,)
 
-    # IMPORTANTE: el orden de las features debe ser idéntico al del entrenamiento.
+    # El orden de las features debe coincidir con el entrenamiento.
     # En el notebook: valores_entrada = df[[objetivo] + features]
-    # → el pasajero normalizado va PRIMERO, luego las 5 features temporales.
+    # El pasajero normalizado va primero, luego las 5 features temporales.
     x_seq = np.column_stack([pasajeros_norm, features_temp])       # (ventana, 6)
     return x_seq, fechas
 
@@ -249,7 +249,7 @@ def predecir(ruta: str, modo: str = "evaluacion") -> dict:
         - 'evaluacion'  : predice noviembre 2024 a partir de la ventana [sep-oct 2024].
                           Permite comparar con los valores reales del dataset.
         - 'prediccion'  : predice los 30 días que siguen al final del dataset (futuro).
-                          Sin comparación posible, ilustra el uso operacional.
+                          Sin comparación con valores reales.
 
     Returns
     -------
@@ -312,7 +312,7 @@ def predecir(ruta: str, modo: str = "evaluacion") -> dict:
     fechas_input = pd.DatetimeIndex(df_input["fecha"].values)
     features_temp = construir_features_temporales(fechas_input)
     pasajeros_norm = normalizar(df_input["pasajeros"].values, ruta)
-    # IMPORTANTE: orden idéntico al entrenamiento — pasajero PRIMERO, luego temporales.
+    # Mismo orden del entrenamiento: pasajero primero, luego features temporales.
     x_seq = np.column_stack([pasajeros_norm, features_temp]).astype(np.float32)
 
     # Inferencia
@@ -335,16 +335,15 @@ def predecir(ruta: str, modo: str = "evaluacion") -> dict:
 
 
 # =============================================================================
-# PCA DE LOS EMBEDDINGS DE RUTA (análisis creativo)
+# PCA DE LOS EMBEDDINGS DE RUTA
 # =============================================================================
 
 @st.cache_data
 def calcular_pca_embeddings_rutas() -> pd.DataFrame:
     """Calcula la proyección PCA 2D de los embeddings de ruta aprendidos.
 
-    Eco metodológico al Módulo 3 (donde calculamos el PCA de los embeddings
-    de usuario). Aquí solo hay 6 rutas, por lo que el PCA tiene un sentido
-    geométrico más fuerte (proyección de 4D a 2D, no de 8D a 2D).
+    Aquí se proyectan 6 rutas de 4D a 2D para facilitar la interpretación
+    visual de los embeddings aprendidos.
 
     Returns
     -------
