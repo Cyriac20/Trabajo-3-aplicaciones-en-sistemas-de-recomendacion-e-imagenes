@@ -10,6 +10,12 @@ data/
 *.h5
 *.onnx
 
+# Excepciones: artefactos necesarios para que la app Streamlit replique
+!streamlit_app/data/
+!streamlit_app/data/*.csv
+!streamlit_app/models/
+!streamlit_app/models/*.pth
+
 # Entornos y caché
 __pycache__/
 *.pyc
